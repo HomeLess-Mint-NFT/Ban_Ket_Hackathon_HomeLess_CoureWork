@@ -1,8 +1,7 @@
-import { minter_backend } from "../../declarations/HomeLess_backend";
-const mintamount = 0; //Will be changed in the future so user has to pay to mint
-
+import { Null } from "@dfinity/candid/lib/cjs/idl";
+import { HomeLess_backend } from "../../declarations/HomeLess_backend";
+const IPFS_LINK = 'https://dweb.link/ipfs/';
 const els = {};
-
 function main() {
   els.btnConnect = document.querySelector("#connect");
   els.btnCheckid = document.querySelector("#checkid");
@@ -20,31 +19,17 @@ function main() {
   els.name = document.querySelector('#name');
   els.receiverPrincipalId2 = document.querySelector('#receiver-principal-id2');
   els.send = document.querySelector("#send");
-
-
-  // els.register = document.querySelector()
-  
+  els.submit = document.querySelector("#submit");
   els.output = document.querySelector('#output');
-
-  // const button = document.getElementById("connect");
-
-  // const addbutton = document.getElementById("add");
-
-  // const generatebut = document.getElementById("generate");
-
-  // button.addEventListener("click", onButtonPress);
-  // addbutton.addEventListener("click", getBalances);
-  // generatebut.addEventListener("click", genrateNft);
   Object
-    .values(els)
-    .filter((el) => el.nodeName === 'BUTTON')
-    .forEach((el) => el.addEventListener(
-        'click',
-        onButtonPressHandler
-      )
+  .values(els)
+  .filter((el) => el.nodeName === 'BUTTON')
+  .forEach((el) => el.addEventListener(
+      'click',
+      onButtonPressHandler
     )
+  )
 }
-// Button press handler
 function onButtonPressHandler(el) {
   const name = el.target.id;
 
@@ -66,6 +51,9 @@ function onButtonPressHandler(el) {
       break;
     case 'btn-request-transfer':
       onBtnRequestTransfer();
+      break;
+    case 'submit':
+      UpIPFS();
       break;
     default:
       outputWrite('Button not found!');
@@ -152,7 +140,7 @@ async function onBtnRequestTransfer() {
 
 async function genrateNft() {
   const idnft = document.getElementById("file").value.toString();
-  const mint = await minter_backend.mint(nft);
+  const mint = await minter_backend.mint(idnft);
   outputWrite("minted...");
   const mintId = mint.toString();
   outputWrite("this id is" + mintId);
@@ -187,24 +175,52 @@ async function sendNft() {
   const response = await window.ic?.plug?.requestTransfer(requestTransferArg);
   outputWrite(`onBtnRequestTransfer() call response ${JSON.stringify(response)}`);
 }
+const namee = Null;
+const descript = Null;
+const image_inputt = Null;
+async function create_image()
+{
+  const image_input = document.querySelector("#image-input");
+
+image_input.addEventListener("change", function() {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    const uploaded_image = reader.result;
+    document.querySelector("#display-image").style.backgroundImage = `url(${uploaded_image})`;
+  });
+  reader.readAsDataURL(this.files[0]);
+});
+   namee = document.getElementById("namee");
+  descript = document.getElementById("descript");
+  image_inputt = image_input;
 
 
+}
 
-// Write to the output DOM element
+
+async function UpIPFS()
+{
+  outputWrite("Minted NFT success!!!");
+  const cid = await client.put(image_inputt);
+  const nFile = new File(
+    [
+      JSON.stringify({
+        description: descript,
+        name: namee,
+        image: `${IPFS_LINK}${cid}/${namee}`,
+      }),
+    ],
+    `${namee}.json`,
+    { type: 'text/plain' }
+  );
+  const metadataCID = await client.put([nFile]);
+  const res = await superheroes.mint(Principal.fromText(principal), [
+    { tokenUri: `${IPFS_LINK}${metadataCID}/${namee}.json` },
+  ]);
+  outputWrite("Minted NFT success!!!");
+}
 function outputWrite(text) {
   els.output.textContent += (els.output.textContent ? `\n` : '') + `> ${text}`;
   els.output.scrollTop = els.output.scrollHeight;
 }
-
-
-
 document.addEventListener("DOMContentLoaded", main);
-
-  //const name = document.getElementById("name").value.toString();
-
-  //button.setAttribute("disabled", true);
-
-  // Interact with foo actor, calling the greet method
-  //const greeting = await minter_backend.greet(name);
-
-  //button.removeAttribute("disabled");
