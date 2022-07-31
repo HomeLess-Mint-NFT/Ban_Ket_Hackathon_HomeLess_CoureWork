@@ -1,0 +1,35 @@
+{
+  "canisters": {
+    "HomeLess_backend": {
+      "main": "src/HomeLess_backend/main.mo",
+      "type": "motoko"
+    },
+    "HomeLess_frontend": {
+      "dependencies": [
+        "HomeLess_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/HomeLess_frontend/src/index.html"
+      },
+      "source": [
+        "src/HomeLess_frontend/assets",
+        "dist/HomeLess_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "dfx": "0.11.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
