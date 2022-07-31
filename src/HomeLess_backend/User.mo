@@ -9,6 +9,7 @@ module {
         createTime: Time.Time;
         alias: Text;
         avatar: Text;
+        
     };
     
 }

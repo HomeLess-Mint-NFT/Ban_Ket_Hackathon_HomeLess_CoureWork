@@ -1,5 +1,3 @@
-
-
 import HashMap "mo:base/HashMap";
 import Cycles "mo:base/ExperimentalCycles";
 import Principal "mo:base/Principal";
@@ -16,9 +14,7 @@ import Result "mo:base/Result";
 import Prelude "mo:base/Prelude";
 import Buffer "mo:base/Buffer";
 import Types "./types";
-
 import User "./User";
-
 shared(msg) actor class NFTSale(
     _owner: Principal,
     ) = this {
@@ -59,25 +55,10 @@ shared(msg) actor class NFTSale(
 //update 
 //delete
 
-    public type Customer = {
-        var name : Text;
-        var Birth: Nat;
-        devFee: Nat; // /1e6
-        devAddr: Principal;
-        paymentToken: Principal;
-        var fundClaimed: Bool;
-        var feeClaimed: Bool;
-    };
 
-    public type SaleInfoExt = {
-        amountLeft: Nat;
-        fundRaised: Nat;
-        devFee: Nat; // /1e6
-        devAddr: Principal;
-        paymentToken: Principal;
-        fundClaimed: Bool;
-        feeClaimed: Bool;
-    };
+
+
+
 
     // DIP20 token actor
 	type DIP20Errors = {
@@ -99,22 +80,7 @@ shared(msg) actor class NFTSale(
         owner : Principal;
         fee : Nat;
     };
-    public type TxReceiptToken = {
-        #Ok: Nat;
-        #Err: DIP20Errors;
-    };
-    type TokenActor = actor {
-        allowance: shared (owner: Principal, spender: Principal) -> async Nat;
-        approve: shared (spender: Principal, value: Nat) -> async TxReceiptToken;
-        balanceOf: (owner: Principal) -> async Nat;
-        decimals: () -> async Nat8;
-        name: () -> async Text;
-        symbol: () -> async Text;
-        getMetadata: () -> async DIP20Metadata;
-        totalSupply: () -> async Nat;
-        transfer: shared (to: Principal, value: Nat) -> async TxReceiptToken;
-        transferFrom: shared (from: Principal, to: Principal, value: Nat) -> async TxReceiptToken;
-    };
+
 
     public type WhitelistActor = actor {
         check: shared(user: Principal) -> async Bool;
@@ -192,12 +158,17 @@ shared(msg) actor class NFTSale(
         }
     };
 
+   
     private func _newUser() : UserInfo {
         {
-            var operators = TrieSet.empty<Principal>();
-            var allowedBy = TrieSet.empty<Principal>();
-            var allowedTokens = TrieSet.empty<Nat>();
-            var tokens = TrieSet.empty<Nat>();
+        var allowedBy = TrieSet.empty<Principal>();
+        var allowedTokens = TrieSet.empty<Nat>();
+        var operators = TrieSet.empty<Principal>();
+        var name =  TrieSet.empty<Text>();     // principals allowed to operate on the user's behalf
+        var birthday =  TrieSet.empty<Text>();     // principals approved user to operate their's tokens
+        var phone = TrieSet.empty<Nat>();
+        var sex =  TrieSet.empty<Text>();       // tokens the user can operate
+        var tokens =  TrieSet.empty<Nat>(); 
         }
     };
 
@@ -216,6 +187,10 @@ shared(msg) actor class NFTSale(
             operators = TrieSet.toArray(info.operators);
             allowedBy = TrieSet.toArray(info.allowedBy);
             allowedTokens = TrieSet.toArray(info.allowedTokens);
+            name  = TrieSet.toArray(info.name);
+            birthday = TrieSet.toArray(info.birthday);
+            phone = TrieSet.toArray(info.phone);
+            sex = TrieSet.toArray(info.sex);
             tokens = TrieSet.toArray(info.tokens);
         };
     };
@@ -317,25 +292,7 @@ shared(msg) actor class NFTSale(
         _transfer(blackhole, tokenId);
     };
 
-    private func _batchMint(to: Principal, amount: Nat): async Bool {
-        var startIndex = totalSupply_;
-        var endIndex = startIndex + amount;
-        while(startIndex < endIndex) {
-            let token: TokenInfo = {
-                index = totalSupply_;
-                var owner = to;
-                var metadata = null;
-                var operator = null;
-                timestamp = Time.now();
-            };
-            tokens.put(totalSupply_, token);
-            _addTokenTo(to, totalSupply_);
-            totalSupply_ += 1;
-            startIndex += 1;
-            ignore addTxRecord(msg.caller, #mint(null), ?token.index, #user(blackhole), #user(to), Time.now());
-        };
-        return true;
-    };
+
 
 
 	public shared(msg) func setOwner(new: Principal): async Principal {
@@ -361,26 +318,7 @@ shared(msg) actor class NFTSale(
         return #Ok((token.index, txid));
     };
 
-    public shared(msg) func batchMint(to: Principal, arr: [?TokenMetadata]): async MintResult {
-        if(msg.caller != owner_) {
-            return #Err(#Unauthorized);
-        };
-        let startIndex = totalSupply_;
-        for(metadata in Iter.fromArray(arr)) {
-            let token: TokenInfo = {
-                index = totalSupply_;
-                var owner = to;
-                var metadata = metadata;
-                var operator = null;
-                timestamp = Time.now();
-            };
-            tokens.put(totalSupply_, token);
-            _addTokenTo(to, totalSupply_);
-            totalSupply_ += 1;
-            ignore addTxRecord(msg.caller, #mint(metadata), ?token.index, #user(blackhole), #user(to), Time.now());
-        };
-        return #Ok((startIndex, txs.size() - arr.size()));
-    };
+  
 
     public shared(msg) func burn(tokenId: Nat): async TxReceipt {
         if(_exists(tokenId) == false) {
@@ -557,10 +495,6 @@ shared(msg) actor class NFTSale(
 
     public query func balanceOf(who: Principal): async Nat {
         return _balanceOf(who);
-    };
-
-    public query func totalSupply(): async Nat {
-        return totalSupply_;
     };
 
 

@@ -43,9 +43,13 @@ module {
     };
 
     public type UserInfo = {
-        var operators: TrieSet.Set<Principal>;     // principals allowed to operate on the user's behalf
-        var allowedBy: TrieSet.Set<Principal>;     // principals approved user to operate their's tokens
-        var allowedTokens: TrieSet.Set<Nat>;       // tokens the user can operate
+        var operators : TrieSet.Set<Principal>; 
+        var allowedBy : TrieSet.Set<Principal>; 
+        var allowedTokens: TrieSet.Set<Nat>;   
+        var name : TrieSet.Set<Text>;     // principals allowed to operate on the user's behalf
+        var birthday: TrieSet.Set<Text>;     // principals approved user to operate their's tokens
+        var phone : TrieSet.Set<Nat>;
+        var sex : TrieSet.Set<Text>;       // tokens the user can operate
         var tokens: TrieSet.Set<Nat>;              // user's tokens
     };
 
