@@ -3,14 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>HomePage</title>
+    <title>HomeLess</title>
     <base href="/" />
     <link rel="icon" href="favicon.ico" />
     <link type="text/css" rel="stylesheet" href="main.css" />
   </head>
   <body>
     <main>
-      
       <button id="checkid" type="submit">Principal Id</button>
       <button id="balance" type="submit">Get Balance</button>
       <button id="connect" type="submit">Connect to plug</button>
@@ -220,13 +219,22 @@
         <button id="send">Send</button>
       </div>
     </p>
+    <input type="file" id="image-input" accept="image/jpeg, image/png, image/jpg">
 
-
- 
+    <div id="display-image"></div>
+      <br>
+      <br>
+      Name<input type="text" id="namee" >
+      <br>
+      Description<input type="text" id="descript">
+      <br>
+      <button class="button" id="submit">Submit</button>
+      <br>
+      <br>
+      <div class="container" class="container mx-auto py-6 px-2 mt-20">
+        <label class="text-gray-500 mb-1 block">Output</label>
+        <textarea id="output" class="h-40 w-full border-2 rounded-md border-gray-300 p-2"></textarea>
+      </div>
     </main>
-
-    
-
-    
   </body>
 </html>
