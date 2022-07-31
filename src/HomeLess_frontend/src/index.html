@@ -35,6 +35,13 @@
         <button id="btn-request-transfer">requestTransfer</button>
 
       </div>
+      <br><br><br>
+
+      <div class="container" class="container mx-auto py-6 px-2 mt-20">
+        <label class="text-gray-500 mb-1 block">Output</label>
+        <textarea id="output" class="h-40 w-full border-2 rounded-md border-gray-300 p-2"></textarea>
+      </div>
+      <br><br>
 
       <br><br><br>
       <div>
@@ -46,42 +53,9 @@
       <br><br>
 
 
-      <br><br>
-
-      <div class="container space-y-10">
-        
-        <div>
-        <label class="text-gray-500 mb-1 block">Upload</label>
-        <input id="file" alt="file" type="file" accept=".jpg, .png" multiple required/>
-        </div>
-
-        <button id="generate">Mint</button>
-      </div>
-
-      <section id="greeting"></section>
-      <section id="balance"></section> 
-
-      <br><br>
-
-      <div class="container space-y-10">
-        
-        <div>
-        <label class="text-gray-500 mb-1 block">Enter a tokenURI</label>
-        <input id="name" alt="Name" type="text" />
-        </div>
-        <div>
-          <label class="text-gray-500 mb-1 block">Send to address</label>
-          <input id="receiver-principal-id2" class="w-1/2 border-2 rounded-md border-gray-300 p-2" />
-        </div>
-
-        <button id="send">Send</button>
-      </div>
       
-      <div class="container" class="container mx-auto py-6 px-2 mt-20">
-        <label class="text-gray-500 mb-1 block">Output</label>
-        <textarea id="output" class="h-40 w-full border-2 rounded-md border-gray-300 p-2"></textarea>
-      </div>
-      <br><br>
+      
+      
 
       <p id ="Customer">
       <h3 >Customer List</h3>
@@ -100,7 +74,7 @@
             <td>5/5/2000</td>
             <td>0988091802</td>
             <td>Male</td>
-            <td><button>Update</button> <button>delete</button></td>
+            <td><a href="#update"><button>Update</button></a> <button>delete</button></td>
         </tr>
         <tr>
           <td>2</td>
@@ -108,7 +82,7 @@
           <td>6/4/1998</td>
           <td>0917345677</td>
           <td>Male</td>
-          <td><button>Update</button> <button>delete</button></td>
+          <td><a href="#update"><button>Update</button></a> <button>delete</button></td>
       </tr>
       <tr>
         <td>3</td>
@@ -116,7 +90,7 @@
         <td>3/4/1986</td>
         <td>012345678</td>
         <td>Female</td>
-        <td><button>Update</button> <button>delete</button></td>
+        <td><a href="#update"><button>Update</button></a> <button>delete</button></td>
       </tr>
       <tr>
         <td>4</td>
@@ -124,17 +98,18 @@
         <td>2/2/1989</td>
         <td>08678001</td>
         <td>Female</td>
-        <td><button>Update</button> <button>delete</button></td>
+        <td><a href="#update"><button>Update</button></a> <button>delete</button></td>
       </tr>
         
       </table>
-    </p>
       <br><br>
+      <a href="#regis"><button>Register</button></a>
+      </p>
 
-      <button>Register</button>
       <br><br><br>
+      <p id="regis"></p>
+      
       <div>
-
       <h3 >Register </h3>
 
       <div>
@@ -173,7 +148,7 @@
 
 
     <div>
-
+      <p id="update"></p>
       <h3 >Update </h3>
 
       
@@ -214,7 +189,7 @@
     <div>
       <h3>Create New Item</h1>
       <div class = "box">
-      <input type = "file">
+        <input id="file" alt="file" type="file" accept=".jpg, .png, .git" multiple required/>
       </div>
       <br>
     <div> NFT name 
@@ -223,8 +198,27 @@
     <div>Description
     <input type = "text">
     </div>
-    <button>Submit</button>
+    <button id="generate">Submmit</button>
     </div>
+    <section id="greeting"></section>
+      <section id="balance"></section> 
+
+    <br><br>
+
+
+      <div class="container space-y-10">
+        
+        <div>
+        <label class="text-gray-500 mb-1 block">Enter a tokenURI</label>
+        <input id="name" alt="Name" type="text" />
+        </div>
+        <div>
+          <label class="text-gray-500 mb-1 block">Send to address</label>
+          <input id="receiver-principal-id2" class="w-1/2 border-2 rounded-md border-gray-300 p-2" />
+        </div>
+
+        <button id="send">Send</button>
+      </div>
     </p>
 
 
